@@ -1,3 +1,3 @@
-# LFA 
+# Project 1
 
-Project for my Formal Languages and Automata Theory course. DFA, NFA and Lambda-NFA implementations.
+DFA, NFA and Lambda-NFA implementations.
