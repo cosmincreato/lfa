@@ -75,8 +75,14 @@ def accepted(word):
 
         if not lc_ver:
             #### Check lambda-closure
-            for jump_state in lambda_closure(crt_state):
-                queue.append((jump_state, w, True))
+            if w != '':
+                for jump_state in lambda_closure(crt_state):
+                    queue.append((jump_state, w, True))
+            else:
+                for jump_state in lambda_closure(crt_state):
+                    if jump_state in fin_states:
+                        ans = True
+                        break
         else:
             ### Check w[0]
             if (crt_state, w[0]) not in delta:
@@ -89,6 +95,8 @@ def accepted(word):
                     if next_state in fin_states:
                         ans = True
                         break
+                    else:
+                        queue.append((next_state, '', False))
     return ans
 
 
