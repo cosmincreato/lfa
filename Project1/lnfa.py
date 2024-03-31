@@ -46,7 +46,7 @@ def read():
 
 
 def lambda_closure(state):
-    paths = []
+    paths = [state]
     lambda_queue = []
     if (state, LAMBDA) not in delta:
         return paths
@@ -59,32 +59,36 @@ def lambda_closure(state):
         paths.append(crt_state)
         if (crt_state, LAMBDA) in delta:
             for next_state in delta[(crt_state, LAMBDA)]:
-                lambda_queue.append(next_state)
+                if next_state not in paths:
+                    lambda_queue.append(next_state)
     return paths
 
 
 def accepted(word):
+    # Al treilea parametru din tuplu =
+    # False daca trebuie sa veificam lambda inchiderea inaintea urmatoarei litere
+    # True daca lambda inchiderea a fost deja verificata, deci trecem la litera
     ans = False
-    queue.append((init_state, word))
+    queue.append((init_state, word, False))
     while queue:
-        crt_state, w = queue.pop(0)
+        crt_state, w, lc_ver = queue.pop(0)
 
-        #### Check lambda-closure
-        for jump_state in lambda_closure(crt_state):
-            queue.append((jump_state, w))
+        if not lc_ver:
+            #### Check lambda-closure
+            for jump_state in lambda_closure(crt_state):
+                queue.append((jump_state, w, True))
+        else:
+            ### Check w[0]
+            if (crt_state, w[0]) not in delta:
+                delta[(crt_state, w[0])] = [0]
 
-
-        ### Check w[0]
-        if (crt_state, w[0]) not in delta:
-            delta[(crt_state, w[0])] = [0]
-
-        for next_state in delta[(crt_state, w[0])]:
-            if w[1:]:
-                queue.append((next_state, w[1:]))
-            else:
-                if next_state in fin_states:
-                    ans = True
-                    break
+            for next_state in delta[(crt_state, w[0])]:
+                if w[1:]:
+                    queue.append((next_state, w[1:], False))
+                else:
+                    if next_state in fin_states:
+                        ans = True
+                        break
     return ans
 
 
