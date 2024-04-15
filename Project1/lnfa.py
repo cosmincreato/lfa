@@ -48,6 +48,8 @@ def read():
 def lambda_closure(state):
     paths = [state]
     lambda_queue = []
+    visited = set(paths)
+
     if (state, LAMBDA) not in delta:
         return paths
     else:
@@ -57,11 +59,13 @@ def lambda_closure(state):
     while lambda_queue:
         crt_state = lambda_queue.pop(0)
         paths.append(crt_state)
+        visited.add(crt_state)
+
         if (crt_state, LAMBDA) in delta:
             for next_state in delta[(crt_state, LAMBDA)]:
-                if next_state not in paths:
+                if next_state not in visited:
                     lambda_queue.append(next_state)
-    return paths
+    return list(set(paths))
 
 
 def accepted(word):
@@ -70,8 +74,12 @@ def accepted(word):
     # True daca lambda inchiderea a fost deja verificata, deci trecem la litera
     ans = False
     queue.append((init_state, word, False))
+
     while queue:
         crt_state, w, lc_ver = queue.pop(0)
+        if crt_state == 0:
+            continue
+
 
         if not lc_ver:
             #### Check lambda-closure
@@ -97,6 +105,7 @@ def accepted(word):
                         break
                     else:
                         queue.append((next_state, '', False))
+
     return ans
 
 
@@ -104,5 +113,7 @@ read()
 for word in words:
     if (accepted(word)):
         out.write("DA\n")
+        out.flush()
     else:
         out.write("NU\n")
+        out.flush()
