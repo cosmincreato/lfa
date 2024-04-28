@@ -1,0 +1,10 @@
+S A B C
+a b c d e
+S
+50
+S -> aA | bB | .
+A -> aA | cD | .
+B -> bB | b | cC
+C -> c
+D -> dD | d | dE
+E -> e
