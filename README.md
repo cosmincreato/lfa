@@ -1,3 +1,3 @@
 # LFA
 
-Project for my Formal Languages and Automata Theory course.
+Projects for my Formal Languages and Automata Theory course.
