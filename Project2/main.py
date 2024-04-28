@@ -35,4 +35,8 @@ while queue:
         if len(word) == n:
             ans.append(word)
 
-print(ans)
+print(f"{len(ans)} cuvinte generate")
+
+with open("output.txt","w") as f:
+    for val in ans:
+        f.write(val+'\n')

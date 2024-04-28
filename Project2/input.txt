@@ -1,7 +1,7 @@
 S A B C
 a b c d e
 S
-50
+10
 S -> aA | bB | .
 A -> aA | cD | .
 B -> bB | b | cC
